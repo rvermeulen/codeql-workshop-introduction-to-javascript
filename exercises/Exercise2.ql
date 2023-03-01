@@ -1,5 +1,3 @@
 import javascript
 
-from Function function
-where function.getName() = "add"
-select function
+select "Hello, world!"

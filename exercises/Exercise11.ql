@@ -22,14 +22,9 @@ class PrototypePollutionConfiguration extends TaintTracking::Configuration {
 }
 
 class AddChatHandler extends ApiHandler, DataFlow::FunctionNode {
-  AddChatHandler() {
-    this.getName() = "add" and
-    this.getNumParameter() = 2 and
-    this.getParameter(0).getName() = "req" and
-    this.getParameter(1).getName() = "res"
-  }
+  AddChatHandler() { none() }
 
-  override DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
+  override DataFlow::ParameterNode getRequestParameter() { none() }
 }
 
 from PrototypePollutionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink

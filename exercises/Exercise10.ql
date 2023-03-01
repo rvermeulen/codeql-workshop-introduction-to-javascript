@@ -1,9 +1,9 @@
 import javascript
 
-API::Node lodash() { result = API::moduleImport("lodash") }
+API::Node lodash() { none() }
 
 class LodashMergeCall extends API::CallNode {
-  LodashMergeCall() { this = lodash().getMember("merge").getACall() }
+  LodashMergeCall() { none() }
 }
 
-select any(LodashMergeCall c).getAnArgument()
+select any(LodashMergeCall c)
