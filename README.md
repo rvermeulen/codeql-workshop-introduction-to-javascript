@@ -1,6 +1,6 @@
 # CodeQL workshop for JavaScript: Finding a prototype pollution vulnerability
 
-This workshop is based on the workshop [codeql-js-goof-workshop](https://github.com/advanced-security/codeql-workshops-staging/tree/master/javascript/codeql-js-goof-workshop) 
+This workshop is based on the workshop [codeql-js-goof-workshop](https://github.com/advanced-security/codeql-workshops-staging/tree/master/javascript/codeql-js-goof-workshop).
 
 ## Contents
 
@@ -22,6 +22,7 @@ This workshop is based on the workshop [codeql-js-goof-workshop](https://github.
       - [Exercise 9](#exercise-9)
       - [Exercise 10](#exercise-10)
       - [Exercise 11](#exercise-11)
+      - [Exercise 12](#exercise-12)
 
 
 ## Prerequisites and setup instructions
@@ -225,7 +226,6 @@ Implement [Exercises8.ql](exercises/Exercise8.ql) such that it finds all calls t
 
 - The class `ModuleImportNode`, part of the `DataFlow` module, has a member predicate `getAMemberCall` to reason about member calls by name.
 
-
 </details>
 
 A solution can be found in the query [Exercise8.ql](solutions/Exercise8.ql).
@@ -269,10 +269,25 @@ A solution can be found in the query [Exercise10.ql](solutions/Exercise10.ql).
 
 #### Exercise 11
 
-With the `merge` calls identified we can start focussing on the vulnerability.
-A user-provided value that is passed to the `merge` call can be exploited by an attacker.
+Having both identified the entry point and the security sensitive operation, we can move to reasoning about [dataflow](https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-javascript-and-typescript/).
+Up to now we have already used parts of the available data flow analysis due to the nature of dynamic languages when reasoning about imported modules and using the API graph.
 
-Reuse the identification of the `merge` call from [Exercises9.ql](exercises/Exercise9.ql) and identify the arguments to the `merge` call in [Exercises10.ql](exercises/Exercise10.ql)
+The dataflow graph is built on top of the AST, but contains more detailed semantic information about the flow of information through the program.
+This allows us to determine where user-controlled data is used an whether that use poses a security risk.
+
+In this exercise we are going to make use of global dataflow analysis.
+Global dataflow analysis can track the use of values across function/method boundaries.
+This analysis is computational expensive operation and to make this tractable we have to restrict it the parts of the programs that are relevant.
+This is done using a configuration pattern where we need to extend a dataflow or taintracking configuration and provide predicates to configure the analysis.
+
+For this workshop it suffices to introduce the concepts `source` and `sink`.
+The global dataflow analysis is configured by specifying the _sources_, the starting points of the analysis, that need to be considered, and the _sinks_, the program elements where the analysis stops and is considered complete.
+With the _sources_ and _sinks_ defined, the global dataflow analysis will try to determine if there is a _sink_ that is reachable from a _source_.
+In other words, does there exists a path from a _source_ to a _sink_.
+
+Complete [Exercise11.ql](exercises/Exercise11.ql) by copying your solution from [Exercises4.ql](exercises/Exercise4.ql) and implement the `getRequestParameter` predicate.
+
+Use _quick evaluation_ on the `isSource` member predicate of the `PrototypePollutionConfiguration` to validate that it finds the correct request parameter.
 
 <details>
 <summary>Hints</summary>
@@ -281,4 +296,14 @@ Reuse the identification of the `merge` call from [Exercises9.ql](exercises/Exer
 
 </details>
 
-A solution can be found in the query [Exercise10.ql](solutions/Exercise10.ql).
+A solution can be found in the query [Exercise11.ql](solutions/Exercise11.ql).
+
+#### Exercise 12
+
+The last step is to specify the `sink` of the global dataflow configuration.
+
+Reuse your solution for [Exercises10.ql](exercises/Exercise10.ql) and complete [Exercises10.ql](exercises/Exercise10.ql) by implementing the class `LodashMergeSink`.
+
+Running the query should provide a dataflow path from the `req` parameter to an argument of the `merge` call.
+
+A solution can be found in the query [Exercise11.ql](solutions/Exercise11.ql).
