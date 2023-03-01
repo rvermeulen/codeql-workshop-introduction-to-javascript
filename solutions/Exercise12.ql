@@ -39,7 +39,9 @@ class LodashMergeCall extends API::CallNode {
 }
 
 class LodashMergeSink extends PrototypePollutionSink {
-  LodashMergeSink() { this = any(LodashMergeCall c).getAnArgument() }
+  LodashMergeSink() {
+    exists(LodashMergeCall c | this = c.getArgument([1 .. c.getNumArgument() - 1]))
+  }
 }
 
 from PrototypePollutionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
