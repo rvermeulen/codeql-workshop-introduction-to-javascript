@@ -38,6 +38,8 @@ This workshop is based on the workshop [codeql-js-goof-workshop](https://github.
 
 - Install the CodeQL pack dependencies using the command `CodeQL: Install Pack Dependencies` and select `exercises`, and `solutions`.
 - Build the database `nodejs-goof-db.zip` by running the command `make` or manually executed the commands associated with the `nodejs-goof-db.zip` Make target.
+  Alternatively, you can download a [pre-built database](https://drive.google.com/file/d/1BPvRlCIVbX7Hwvd05Zk5cSOpB8Wa5JKs/view?usp=sharing).
+- Select the database using the command `CodeQL: Choose Database from Archive` and pass the path to the database.
 
 ## Workshop
 
