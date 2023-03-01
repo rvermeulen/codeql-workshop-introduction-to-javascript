@@ -1,0 +1,3 @@
+[submodule "nodejs-goof"]
+	path = nodejs-goof
+	url = https://github.com/snyk-labs/nodejs-goof

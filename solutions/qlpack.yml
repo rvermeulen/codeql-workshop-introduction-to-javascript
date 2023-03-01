@@ -1,0 +1,6 @@
+---
+library: false
+name: solutions
+version: 0.0.1
+dependencies:
+  codeql/javascript-all: 0.4.2

@@ -1,0 +1,6 @@
+---
+library: false
+name: exercises
+version: 0.0.1
+dependencies:
+  codeql/javascript-all: 0.4.2
